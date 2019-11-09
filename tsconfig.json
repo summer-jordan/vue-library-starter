@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "es6",
-    "declaration": true,
-    "declarationDir": "./dist",
+    "target": "esnext",
+    "module": "esnext",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
@@ -15,7 +13,21 @@
     "baseUrl": ".",
     "typeRoots": [
       "node_modules/@types",
-      "./typings"
+      "src/types"
+    ],
+    "paths": {
+      "@/*": [
+        "src/demo/*"
+      ],
+      "vue-feather-icon": [
+        "dist/lib"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
     ]
   },
   "exclude": [

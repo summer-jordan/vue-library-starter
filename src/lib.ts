@@ -1,14 +1,13 @@
-import * as components from './components';
+import { MyVueLibrary } from './lib/index';
 import { Vue as _Vue } from 'vue/types/vue'
+import featherSprite from 'feather-icons/dist/feather-sprite.svg';
 
 let installed = false;
 function install(Vue: typeof _Vue) {
   if (installed) return;
   installed = true;
-  Object.keys(components).forEach((componentName) => {
-    // @ts-ignore
-    Vue.component(componentName, components[componentName]);
-  });
+  // Register Component
+  Vue.component('my-vue-library', MyVueLibrary);
 }
 
 const plugin = {
@@ -27,4 +26,4 @@ if (GlobalVue) {
 }
 
 export default plugin;
-export * from './components';
+export * from './lib';

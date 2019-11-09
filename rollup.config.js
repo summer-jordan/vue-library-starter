@@ -5,26 +5,32 @@ import commonjs from 'rollup-plugin-commonjs'
 import alias from '@rollup/plugin-alias';
 import buble from '@rollup/plugin-buble';
 import replace from '@rollup/plugin-replace';
-import resolve from 'rollup-plugin-node-resolve';
+import nodeResolve from 'rollup-plugin-node-resolve';
 import generatePackageJson from 'rollup-plugin-generate-package-json'
+import svgo from 'rollup-plugin-svgo'
+
+const outDir = 'dist/lib/';
+const outName = 'library';
 
 const basePlugins = [
   replace({ 'process.env.NODE_ENV': '"production"' }),
   commonjs(),
   alias({
-    resolve: ['.jsx', '.js', '.ts', '.tsx', '.vue'],
+    resolve: ['.jsx', '.js', '.ts', '.tsx', '.vue', '.svg'],
   }),
+  svgo(),
   typescript({
     tsconfig: false,
     experimentalDecorators: true,
     module: 'es2015'
   }),
   vue(),
+  buble(),
 ];
 
 export default [
   {
-    input: './lib/main.ts',
+    input: './src/lib.ts',
     external: [
       'vue',
       'vue-property-decorator',
@@ -33,24 +39,29 @@ export default [
     output: [
       {
         format: 'esm',
-        file: 'dist/library.esm.js',
+        file: `${outDir}${outName}.esm.js`,
         exports: 'named',
-        name: 'MyLibrary',
+        name: 'VueFeatherIcon',
       },
       {
         format: 'cjs',
-        file: 'dist/library.js',
+        file: `${outDir}${outName}.js`,
         exports: 'named',
-        name: 'MyLibrary',
+        name: 'VueFeatherIcon',
       },
     ],
     plugins: [
       ...basePlugins,
+      nodeResolve({
+        only: [
+          'feather-icons',
+        ]
+      }),
       generatePackageJson({
         main: './library.js',
         module: './library.esm.js',
         baseContents: {
-          "name": "@fdstack/vue-library-start",
+          "name": "@fdstack/vue-feather-icon",
           "version": "0.1.0",
           "peerDependencies": {
             "vue": "^2.6.10",
@@ -62,28 +73,28 @@ export default [
     ]
   },
   {
-    input: 'lib/main.ts',
+    input: './src/lib.ts',
     external: [
       'vue',
     ],
     output: {
       format: 'iife',
-      file: 'dist/library.browser.js',
+      file: `${outDir}${outName}.browser.js`,
       exports: 'named',
-      name: 'MyLibrary',
+      name: 'VueFeatherIcon',
       globals: {
         vue: 'Vue'
       }
     },
     plugins: [
       ...basePlugins,
-      resolve({
+      nodeResolve({
         only: [
           'vue-property-decorator',
           'vue-class-component',
+          'feather-icons',
         ]
       }),
-      buble(),
       terser({
         ecma: 5
       })
