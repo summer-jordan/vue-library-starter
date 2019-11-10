@@ -61,7 +61,7 @@ export default [
         main: './library.js',
         module: './library.esm.js',
         baseContents: {
-          "name": "@fdstack/vue-feather-icon",
+          "name": "vue-library-starter",
           "version": "0.1.0",
           "peerDependencies": {
             "vue": "^2.6.10",
