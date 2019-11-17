@@ -1,6 +1,5 @@
 import { MyVueLibrary } from './lib/index';
 import { Vue as _Vue } from 'vue/types/vue'
-import featherSprite from 'feather-icons/dist/feather-sprite.svg';
 
 let installed = false;
 function install(Vue: typeof _Vue) {
