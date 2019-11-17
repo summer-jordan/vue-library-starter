@@ -10,7 +10,8 @@ import generatePackageJson from 'rollup-plugin-generate-package-json'
 import svgo from 'rollup-plugin-svgo'
 
 const outDir = 'dist/lib/';
-const outName = 'library';
+const fileName = 'library';
+const exportName = 'MyLibrary';
 
 const basePlugins = [
   replace({ 'process.env.NODE_ENV': '"production"' }),
@@ -33,29 +34,25 @@ export default [
     input: './src/lib.ts',
     external: [
       'vue',
-      'vue-property-decorator',
-      'vue-class-component',
     ],
     output: [
       {
         format: 'esm',
-        file: `${outDir}${outName}.esm.js`,
+        file: `${outDir}${fileName}.esm.js`,
         exports: 'named',
-        name: 'VueFeatherIcon',
+        name: exportName,
       },
       {
         format: 'cjs',
-        file: `${outDir}${outName}.js`,
+        file: `${outDir}${fileName}.js`,
         exports: 'named',
-        name: 'VueFeatherIcon',
+        name: exportName,
       },
     ],
     plugins: [
       ...basePlugins,
       nodeResolve({
-        only: [
-          'feather-icons',
-        ]
+        only: []
       }),
       generatePackageJson({
         main: './library.js',
@@ -65,8 +62,6 @@ export default [
           "version": "0.1.0",
           "peerDependencies": {
             "vue": "^2.6.10",
-            "vue-class-component": "^7.0.2",
-            "vue-property-decorator": "^8.3.0"
           },
         }
       }),
@@ -79,9 +74,9 @@ export default [
     ],
     output: {
       format: 'iife',
-      file: `${outDir}${outName}.browser.js`,
+      file: `${outDir}${fileName}.browser.js`,
       exports: 'named',
-      name: 'VueFeatherIcon',
+      name: exportName,
       globals: {
         vue: 'Vue'
       }
@@ -92,7 +87,6 @@ export default [
         only: [
           'vue-property-decorator',
           'vue-class-component',
-          'feather-icons',
         ]
       }),
       terser({
